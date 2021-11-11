@@ -13,8 +13,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.drawable.RippleDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,9 +37,18 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
         notifybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent i = new Intent(Intent.ACTION_VIEW,
+//                        Uri.parse("geo:0,0?q=universidad+tecnologica+de+chihuahua"));
+                Intent i = new Intent(Intent.ACTION_DIAL,
+                        Uri.parse("tel:6142517317"));
+                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this,0,i,0);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this,"My Notification");
                 builder.setContentTitle("Ejercio 2 Notificación");
-                builder.setContentText("Estamos probando notificaciones para los wearables");
+                builder.setContentText(Html.fromHtml("<b>Ejercicio</b>"+
+                        " de <u>práctica</u> "+"de <u><i>aviso de notificación</i></u>"));
+                builder.setContentIntent(pendingIntent);
+//                builder.addAction(R.drawable.ic_launcher_background,"Mapa UTCH",pendingIntent);
+                builder.addAction(R.drawable.ic_launcher_background, "llamar",pendingIntent);
                 builder.setSmallIcon(R.drawable.ic_launcher_background);
                 builder.setAutoCancel(true);
                 NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
@@ -44,19 +56,4 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             }
         });
     }
-//    public void sendNotification(View view){
-//        int notificationID = 1;
-//        String id = "my_chanel_01";
-////        String eventId = "1";
-//        Intent viewIntent = new Intent(this,NotifyActivity.class);
-//        viewIntent.putExtra(EXTRA_EVENT_ID, eventId);
-//        PendingIntent viewPendingIntent = PendingIntent.getActivity(this,0,viewIntent,0);
-//        NotificationCompat.Builder notificacitionBuilder= new NotificationCompat.Builder(this,id)
-//                .setSmallIcon(R.drawable.ic_launcher_background)
-//                .setContentTitle("Ejercicio Notificación")
-//                .setContentText("Esta es una notificación de ejercicio 2")
-//                .setContentIntent(viewPendingIntent);
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        notificationManager.notify(notificationID,notificacitionBuilder.build());
-//    }
 }
